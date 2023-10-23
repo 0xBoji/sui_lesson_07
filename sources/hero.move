@@ -11,6 +11,7 @@ module game_hero::hero {
     struct Hero has key, store {
         id: UID,
         hp: u64,
+        mana: u64,
         experience: u64,
         sword: Option<Sword>,
         game_id: ID,
@@ -117,6 +118,7 @@ module game_hero::hero {
 
         hero.hp = hero_hp;
         hero.experience = hero.experience + hp;
+        hero.mana = hero.mana + 5;
         if (option::is_some(&hero.sword)) {
             level_up_sword(option::borrow_mut(&mut hero.sword), 1)
         };
@@ -152,7 +154,7 @@ module game_hero::hero {
     }
 
     // --- Inventory ---
-    public fun heal(hero: &mut Hero, potion: Potion) {
+    public entry fun heal(hero: &mut Hero, potion: Potion) {
         assert!(hero.game_id == potion.game_id, 403);
         let Potion { id, potency, game_id: _ } = potion;
         object::delete(id);
@@ -202,6 +204,7 @@ module game_hero::hero {
         Hero {
             id: object::new(ctx),
             hp: 100,
+            mana: 50,
             experience: 0,
             sword: option::some(sword),
             game_id: id(game)
@@ -210,17 +213,16 @@ module game_hero::hero {
 
     public entry fun send_potion(
         game: &GameInfo,
-        potency: u64,
+        payment: Coin<SUI>,
         player: address,
-        admin: &mut GameAdmin,
         ctx: &mut TxContext
     ) {
-        check_id(game, admin.game_id);
-        admin.potions_created = admin.potions_created + 1;
+        let potency = coin::value(&payment) * 10;
         transfer::public_transfer(
             Potion { id: object::new(ctx), potency, game_id: id(game) },
             player
-        )
+        );
+        transfer::public_transfer(payment, game.admin)
     }
 
     public entry fun send_boar(

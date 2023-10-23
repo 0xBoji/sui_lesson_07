@@ -6,13 +6,23 @@ sui move build
 sui client publish --gas-budget 3000000000
 #+end_src
 
+  - ID: 0x6c3041ddb619e1c3ac0b248791169deae28e9789f2e2f5ca3caab127276575b8 , Owner: Immutable
+  - ID: 0x70c36b5e35c9594162594dae706f6a12222c4992d04cc2bbbb1aa4255164fc4a , Owner: Account Address ( 0xd7d38cc2773f97b2a2f36cde098159176a25af673864f44263f6c3c99ab782eb )
+  - ID: 0xb6fa0e9756b961d3f18a066b1ee2a985391dd42d2f007c3d7ff90c8c0f2dc43e , Owner: Account Address ( 0xd7d38cc2773f97b2a2f36cde098159176a25af673864f44263f6c3c99ab782eb )
+  - ID: 0xe0b2ed7ca0be1df60a29d7a257331aa86be1616d3e9625db24496951c58b3dbf , Owner: Account Address ( 0xd7d38cc2773f97b2a2f36cde098159176a25af673864f44263f6c3c99ab782eb )
+  - ID: 0xf4866cb38a67ce8d924f4a9749d2d0e484d347b03576f854ae5a4eafec80d2a8 , Owner: Immutable
+Mutated Objects:
+  - ID: 0x32c064aeefe1a5ed29e860f6f86500121edab94d9e8c144b370d7ceb1dd90b34 , Owner: Account Address ( 0xd7d38cc2773f97b2a2f36cde098159176a25af673864f44263f6c3c99ab782eb )
+
+
 #+begin_src sh :results output :session share
-export SEA_ADMIN=0x1f76efc673b515fc3d10d0b0c483d1cc57867048d2a78c165fb45869810cd927
-export INFO=0x978dc492993fd5a3d073ccb600b994f2b8eac57c9e7f7398c0846855e2f16412
-export ADMIN=0xda110ed0d2fae8e48141adc954b64bc4940719c45f703184093aa872d3828887
-export CT=0x20895476cd034ae2f6c4a7ba99c998d202abc81d013fc743a59e7a76a32362de
-export HERO=0x4fe43b04b20d3e6dc8af60f20514303a2e43a2e8c13f1cca3c2de5be6d7a40b3
-export BOAR=0xce1018bb1903a6063c9bb8a6ab6ca15941a4f32a0005bf23dcd3802e7c6ddd66
+export SEA_ADMIN=0xb6fa0e9756b961d3f18a066b1ee2a985391dd42d2f007c3d7ff90c8c0f2dc43e
+export INFO=0x6c3041ddb619e1c3ac0b248791169deae28e9789f2e2f5ca3caab127276575b8
+export ADMIN=0xe0b2ed7ca0be1df60a29d7a257331aa86be1616d3e9625db24496951c58b3dbf
+export CT=0xf4866cb38a67ce8d924f4a9749d2d0e484d347b03576f854ae5a4eafec80d2a8
+
+export HERO=0x184431fe9b183364fa8bb2e27f61e8f3eec0ffdf6a4a69443b678a0ac653a491
+export BOAR=0xaf503f1da57cc832369ea45f29c65831a56cbcc3d6a6cf613fcb479c212cd52d
 export PLAYER=0xd7d38cc2773f97b2a2f36cde098159176a25af673864f44263f6c3c99ab782eb
 #+end_src
 
@@ -36,4 +46,15 @@ sui client call --package $CT --module sea_hero --function create_monster --args
 ** Slay
 #+begin_src sh :results output :session share
 sui client call --package $CT --module hero --function slay --args $INFO $HERO $BOAR --gas-budget 3000000000
+#+end_src
+
+** Buy potion
+#+begin_src sh :results output :session share
+sui client call --package $CT --module hero --function send_potion --args $INFO 0x456c72176f8db936f747b5688d4799a4388a2e6ab41a1fcc1e32ba16f43d3bcf $PLAYER --gas-budget 3000000000
+#+end_src
+
+  - ID: 0xc41620c084ddebc25c8bda891a4430c85be7778bd24fdaba56688614b8c06e25 , Owner: Account Address ( 0xd7d38cc2773f97b2a2f36cde098159176a25af673864f44263f6c3c99ab782eb )
+
+#+begin_src sh :results output :session share
+sui client object 0xc41620c084ddebc25c8bda891a4430c85be7778bd24fdaba56688614b8c06e25
 #+end_src
